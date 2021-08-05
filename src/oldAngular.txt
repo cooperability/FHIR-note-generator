@@ -1,0 +1,1410 @@
+var ReportInputController = app.controller('ReportInputController', ['$scope', '$window', '$location', '$route', 'ReportInputService', 'ChoirService', function($scope, $window, $location, $route, reportInputService, choirService) {
+
+    $scope.data = {};
+    $scope.parseComplete = false;
+
+//    $scope.output = "haha";
+
+    angular.element(document.getElementById("input")).attr("spellcheck",false);
+    angular.element(document.getElementById("ouput")).attr("spellcheck",false);
+
+    var saved = reportInputService.getSavedValue();
+    Object.keys(saved).forEach(function(x) {
+        $scope[x] = saved[x];
+    });
+
+    // hotkeys.bindTo($scope)
+    //     .add({ combo: 'n', description: 'New patient',
+    //        callback: function() { location.reload(); }
+    //     });
+
+
+    $scope.simulatedReport = function() {
+        var simulated = 'Stanford Pain Management Center Outcomes\nMRN 12345678\nName ABC\nDOB   01/01/1907\nAGE    108\nGender    M\nDepression  59 / 82 / Moderate\nAnxiety    61 / 86 / Moderate\nAnger  48 / 42\nPhysical Function *   69 / 97\nPain Interference 62 / 88\nPain Behavior 57 / 76\nFatigue   66 / 95\nSleep-Related Impairment  60 / 84\nSleep Disturbance 46 / 34 / None to Slight\nEmotional Support *  52 / 58\nSatisfaction Roles Activities *   62 / 88\nGlobal Health - Physical *    68 / 96\nGlobal Health - Mental *  61 / 86\nSocial Isolation  50 / 50\n* Scores and percentiles have been inverted\nThis was an assisted survey\nBody Map\nSelect the areas where you are experiencing pain  125,110,107,207,210,219,218\npainCatastrophizingScale\n14 Mar 15   20 \nBackground\n        How many miles do you live from our facility?        41-100 miles\n        How long does it take you to get to our facility?        more than 2 hours\n        Who is your Primary Care Physician?          Dr. A\n        Who referred you to our clinic?         Dr. B\nIn terms of marital status, are you:   Married\n        Which other pain doctor or pain clinic have you seen for your problem, in the past 5 years?        I have seen Dr. C.\nHow far did you go in school? (Select the highest attained)    Bachelor\'s degree (e.g., BA, AB, BS, BBA)\n        What are the specific question(s) that you or your doctor wants answered today?        What is causing the back pain, and is their a treatment that can help me feel better?\nStanford Five and Treatment Expectations\nExplain what you believe is the cause of your pain?  Muscle, Nerve, Cancer\nHow has your pain affected your life?   Cannot do my job, Reduced social activities, Reduced recreational activities\nIf your pain were 50% less tomorrow, what would you be doing differently?    More physical activities and/or Take less pain medication\nWhat do you believe is the appropriate treatment?   Finding a diagnosis, Unknown\nFunctional Assessment\nPlease describe your activities in an average day and/or Active 3 to 4 hours each day.  Rest in recliner the rest of the day.  Go to work for about 2 hours.\n        Current or former occupation        Business owner.  Former occupation included farming.\n        Are you working now?        Yes\n        Are you receiving any kind of disability?         No\n        Are you involved in a legal action related to your pain problem?       No\n        Are there any other legal problems?        No\nPain Experience\nHow long have you had your pain problem?  13 Years \nBriefly describe how your pain started   Started suddenly as back pain preoperatively.  \nDescribe your current pain   Stabbing, Sharp, Aching Tiring, Exhausting\nPlease describe the timing of your pain    Constant\nWhat do you do to ease or relieve your pain? Medications, Movement, Sitting\nWhat makes your pain worse?    Bedrest and/or Being too active\nPain Intensity:  0=No Pain, 10=Worst Pain Imaginable\nWorst   Average    Now    Least  \n8    5  5  3  \nHealthcare Utilization\n        In the past 6 months, how many times did you visit a physician?Do not include visits while in the hospital or to a hospital emergency room.          13 Physician visits\n        In the past 6 months, how many times did you go to a hospital emergency room?         0 Emergency room visits\n        How many different times did you stay in a hospital overnight or longer in the past 6 months?         0 Overnight hospital stays\n        How many total nights did you stay in the hospital in the past 6 months?       0 Total nights\nSleep Impairment\n        Have you been told you snore loudly or gasp for breath at night?         Yes\nOpioid Pain Medications\nVicodin, Lortab, Norco (Hydrocodone) Still taking, Effective, Experienced side effects  \nPercocet, Roxycodone, Oxycontin (Oxycodone)  Still taking, Effective, Experienced side effects  \nNerve Pain Medications\nGabapentin (Neurontin)   Effective, Experienced side effects    \nMood Medications\nCymbalta (Duloxetine)  Still taking, Effective    \nComplementary and Alternative Medications\nFish oil  \nGlucosamine  Still taking, Effective    \n4 A\s of Opioid Treatment\nHow much has this improved your activity or general level of function?    Improved somewhat\nHow did the medication affect your pain level?  Somewhat helpful\nAre you taking your opioid pain medications any differently than prescribed by your doctor?  No\nAre you having any problematic side effects?   Constipation, Loss of sexual interest, Slowed thinking, Drowsiness\nOpioid Risk\nDate  Score  Risk   \n14 Mar 15    0  Low    \nOpioid Risk Tool\n        Have you personally been a victim of sexual abuse in your pre-adolescent years?        No\nPsychology History\n        Prior to the age of 17, did you experience any major upheaval that you think may have shaped your life or personality significantly?       No\n        After the age of 17, did you experience any other major upheaval that you think may have shaped your life or personality significantly?        Yes\n        Do you feel you were neglected as a child?        No\n        Did you experience chronic pain as a child?        No\n        Do you currently feel threatened in your environment?          Yes\n        Have you ever been psychiatrically hospitalized?          No\nPost Traumatic Stress Disorder\n        Is your pain from a traumatic event?       Yes\n        In your life, have you ever had any experience that was so frightening, horrible, or upsetting that, in the past month, you: Have had nightmares about it or thought about it when you did not want to?       No\n        In your life, have you ever had any experience that was so frightening, horrible, or upsetting that, in the past month, you: Have tried hard not to think about it or went out of your way to avoid situations that reminded you of it?        Yes\n        In your life, have you ever had any experience that was so frightening, horrible, or upsetting that, in the past month, you: Were constantly on guard, watchful, or easily startled?          No\n         In your life, have you ever had any experience that was so frightening, horrible, or upsetting that, in the past month, you: Felt numb or detached from others, activities, or your surroundings?         No\nSmoking\n        Do you smoke?         No\nAlcohol and drugs\n        Do you drink alcohol?       No\n In the past 10 years have you ever tried street drugs?    No\nHave you or anyone around you ever felt you had a problem with alcohol or drugs?       No\nHave you ever received alcohol or drug treatment?  No\nPROMIS Depression\nIn the past 7 days I felt depressed Sometimes\nIn the past 7 days I felt hopeless  Sometimes\nIn the past 7 days I felt worthless Never\nIn the past 7 days I felt helpless  Sometimes\nPROMIS Anxiety\nIn the past 7 days I felt uneasy    Sometimes\nIn the past 7 days I found it hard to focus on anything other than my anxiety   Rarely\nIn the past 7 days My worries overwhelmed me   Sometimes\nIn the past 7 days I felt like I needed help for my anxiety Sometimes\nPROMIS Anger\nIn the past 7 days I was grouchy  Sometimes\nIn the past 7 days I felt like I was ready to explode   Rarely\nIn the past 7 days I stayed angry for hours    Never\nIn the past 7 days I felt angry Never\nIn the past 7 days I felt angrier than I thought I should   Never\nIn the past 7 days I felt annoyed   Never\nIn the past 7 days I was irritated more than people knew    Sometimes\nIn the past 7 days I made myself angry about something just by thinking about it    Rarely\nPROMIS Physical Function\nDoes your health now limit you in doing two hours of physical labor? Cannot do\nAre you able to do chores such as vacuuming or yard work?   With much difficulty\nAre you able to run errands and shop?    With some difficulty\nAre you able to walk at a normal speed?  Unable to do\nPROMIS Pain Interference\nIn the past 7 days how much did pain interfere with your day to day activities?    Quite a bit\nIn the past 7 days how much did pain interfere with your ability to participate in social activities? Somewhat\nIn the past 7 days how much did pain interfere with your enjoyment of social activities? Somewhat\nIn the past 7 days how much did pain interfere with work around the home?    Somewhat\nPROMIS Pain Behavior\nIn the past 7 days When I was in pain I moved extremely slowly Sometimes\nIn the past 7 days When I was in pain I appeared upset or sad   Sometimes\nIn the past 7 days I had pain so bad it made me cry Never\nIn the past 7 days When I was in pain it showed on my face (squinching eyes, opening eyes wide, frowning)   Rarely\nPROMIS Fatigue\nIn the past 7 days How often did you have to push yourself to get things done because of your fatigue? Always\nIn the past 7 days How run-down did you feel on average?   Quite a bit\nDuring the past 7 days: I have trouble starting things because I am tired Quite a bit\nIn the past 7 days How much were you bothered by your fatigue on average? Quite a bit\nPROMIS Sleep-Related Impairment\nIn the past 7 days I had a hard time concentrating because of poor sleep.    A little bit\nIn the past 7 days I had problems during the day because of poor sleep.  Somewhat\nIn the past 7 days My daytime activities were disturbed by poor sleep.   Sometimes\nIn the past 7 days I had a hard time getting things done because I was sleepy.  Quite a bit\nPROMIS Sleep Disturbance\nIn the past 7 days I had trouble sleeping.  Rarely\nIn the past 7 days My sleep quality was... Good\nIn the past 7 days I was satisfied with my sleep.    Quite a bit\nIn the past 7 days I had a problem with my sleep. A little bit\nPROMIS Emotional Support\nI have someone to confide in or talk to about myself or my problems    Usually\nI have someone I trust to talk with about my problems Usually\nI have someone I trust to talk with about my feelings Usually\nI have someone who will listen to me when I need to talk  Usually\nPROMIS Satisfaction Roles Activities\nI am satisfied with my ability to do things for fun outside my home A little bit\nI am satisfied with my ability to do all of the group activities that are really important to me A little bit\nI am satisfied with my ability to do leisure activities with others  A little bit\nI am satisfied with my ability to do all of the leisure activities that are really important to me   Not at all\nGlobal Health\nIn general, would you say your health is    Fair\nIn general, would you say your quality of life is    Fair\nIn general, how would you rate your physical health? Fair\nIn general, how would you rate your mental health, including your mood and your ability to think?    Good\nIn general, how would you rate your satisfaction with your social activities and relationships?  Fair\nIn general, please rate how well you carry out your usual social activities and roles. (This includes activities at home, at work and in your community, and responsibilities as a parent, child, spouse, employee, friend, etc.)    Fair\nTo what extent are you able to carry out your everyday physical activities such as walking, climbing stairs, carrying groceries, or moving a chair?  A little\nHow often have you been bothered by emotional problems such as feeling anxious, depressed or irritable?  Sometimes\nHow would you rate your fatigue on average? Severe\nPROMIS Social Isolation\nI feel isolated from others   Sometimes\nI feel like a stranger to those around me   Rarely\nI feel detached from other people  Rarely\nI feel that people are around me but not with me   Rarely\nPARPTTEXT/v1/44451106/2015-03-18_22:01[PARPTJSON/v1/47529097/2015-03-18_22:01]\n';
+        console.log(simulated);
+        $scope.input = simulated;
+        $scope.parse(simulated);
+    }
+
+
+    //$window.addEventListener('message',function(e) {
+    //    console.log("onmessage called");
+    //    if (e) {
+    //        console.log(e.data);
+    //        $scope.input = e.data;
+    //        $scope.parse(e.data);
+    //        $scope.parseComplete = true;
+    //    }
+    //});
+    //
+    //console.log("onmessage added");
+
+
+    $scope.parse = function(theInput) {
+
+        var noResponsePlaceHolder = '***';
+
+        function cleanLine(f) {
+//            f = f.replace(/^and\/or/,'');
+            f = f.replace(/^\s+/,'');
+            f = f.replace(/\s+$/,'');
+            f = f.replace(/ *\t+ */,'\t');
+
+            f = f.replace(/and\/or$/g,'');
+            f = f.replace(/\.$/,'');
+            f = f.replace(/\["/g,'');
+            f = f.replace(/"\]/g,'');
+
+            return(f);
+        }
+
+        function cleanField(f) {
+//            f = f.replace(/^and\/or/,'');
+            f = f.replace(/^\s+/,'');  f = f.replace(/\s+$/,'');
+
+            f = f.replace(/and\/or$/,'');
+            f = f.replace(/^and\/or/,'');
+            f = f.replace(/\.$/,'');
+
+            return(f);
+        }
+
+        function splitPROMIS(f) {
+            if(!f) {
+                return(null);
+            }
+            f = f.replace(/^\s+/,'');  f = f.replace(/\s+$/,'');
+            return(f.split(/\s+\/\s+/));
+        }
+
+        var prompts = [
+            'MRN',
+            'Name',
+            'AGE',
+            'Gender',
+            'Depression',
+            'Anxiety',
+            'Anger',
+            'Physical Function *',
+            'Pain Interference',
+            'Pain Behavior',
+            'Fatigue',
+            'Sleep-Related Impairment',
+            'Sleep Disturbance',
+            'Emotional Support *',
+            'Instrumental Support *',
+            'Satisfaction Roles Activities *',
+            'Social Isolation',
+            'Ability to Participate Social *',
+            'Global Health - Physical *',
+            'Global Health - Mental *',
+            'How many miles do you live from our facility',
+            'How long does it take you to get to our facility',
+            'Who is your Primary Care Physician',
+            'Who referred you to our clinic',
+            'In terms of marital status, are you',
+            'Which other pain doctor or pain clinic have you seen for your problem, in the past 5 years',
+            'How far did you go in school? (Select the highest attained)',
+            'What are the specific question(s) that you or your doctor wants answered today',
+            'Explain what you believe is the cause of your pain',
+            'How has your pain affected your life',
+            'If your pain were 50% less tomorrow, what would you be doing differently',
+            'What do you believe is the appropriate treatment',
+            'Please describe your activities in an average day',
+            'Current or former occupation',
+            'Are you working now',
+            'When was the last time you worked',
+            'Are you receiving any kind of disability',
+            'What kind of disability',
+            'Are you involved in a legal action related to your pain problem',
+            'Are there any other legal problems',
+            'How long have you had your pain problem',
+            'Briefly describe how your pain started',
+            'Describe your current pain',
+            'Please describe the timing of your pain',
+            'What do you do to ease or relieve your pain',
+            'What makes your pain worse',
+            'In the past 6 months, how many times did you visit a physician?Do not include visits while in the hospital or to a hospital emergency room',
+            'In the past 6 months, how many times did you go to a hospital emergency room',
+            'How many different times did you stay in a hospital overnight or longer in the past 6 months',
+            'How many total nights did you stay in the hospital in the past 6 months',
+            'Have you been told you snore loudly or gasp for breath at night',
+            'Can you estimate the average number of hours you sleep per night',
+            'If you have difficulty sleeping is it related more to',
+            'Prior to the age of 17, did you experience any major upheaval that you think may have shaped your life or personality significantly',
+            'After the age of 17, did you experience any other major upheaval that you think may have shaped your life or personality significantly',
+            'Do you feel you were neglected as a child',
+            'Did you experience chronic pain as a child',
+            'Do you currently feel threatened in your environment',
+            'Have you ever been psychiatrically hospitalized',
+            'Is your pain from a traumatic event',
+            'In your life, have you ever had any experience that was so frightening, horrible, or upsetting that, in the past month, you: Have had nightmares about it or thought about it when you did not want to',
+            'In your life, have you ever had any experience that was so frightening, horrible, or upsetting that, in the past month, you: Have tried hard not to think about it or went out of your way to avoid situations that reminded you of it',
+            'In your life, have you ever had any experience that was so frightening, horrible, or upsetting that, in the past month, you: Were constantly on guard, watchful, or easily startled',
+            'In your life, have you ever had any experience that was so frightening, horrible, or upsetting that, in the past month, you: Felt numb or detached from others, activities, or your surroundings',
+            'Do you smoke',
+            'Do you drink alcohol',
+            'How many drinks per day',
+            'How many drinks per week',
+            'Do you drink to intoxication or binge drink',
+            'Do you drink to decrease your pain',
+            'In the past 10 years have you ever tried street drugs',
+            'Have you or anyone around you ever felt you had a problem with alcohol or drugs',
+            'Have you ever received alcohol or drug treatment',
+
+            'How much has this improved your activity or general level of function',
+            'How did the medication affect your pain level',
+            'Are you taking your opioid pain medications any differently than prescribed by your doctor',
+            'Are you having any problematic side effects',
+
+            'Within the past year have you had headaches or facial pain that limit you from working, studying or doing what you need to do',
+            'Does light or sound bother you when you have a headache (a lot more than when you don\'t have a headache)',
+            'Do you feel nauseated or sick to your stomach when you have a headache',
+            'How old were you when you first started having headaches of any kind',
+            'When did your most bothersome headaches start',
+            'In the last 3 months,what is the average number of headaches that you have per',
+            'Do you have more than one type of headache',
+            'How long does your most severe headache last',
+            'Are greater than 90% of your headaches one sided',
+            'Which side',
+            'How long does it take for your headache to get to maximal intensity',
+            'What is the most common location of your pain (select all that apply)',
+            'On average how many headache free days do you have in a month',
+            'Does routine physical activity worsen your headache',
+            'Are you restless during your headaches',
+            'With the headaches do you have (select all that apply)',
+            'Have you been able to identify triggers for your headaches',
+            'Do you have aura with your headache',
+            'What kind of aura do you have',
+            'Have you been given triptan medications for your headaches (Sumatriptan, Imitrex, Treximet, Rizatriptan, Maxalt, Eletriptan, Relpax, Almotriptan, Axert, Naratriptan, Amerge, Frovatriptan, Frova, Zolmitriptan,  Zomig)',
+            'Which of these triptan medications have you taken',
+            'In the last 3 months, have you used opiates greater than 15 days per month'
+        ];
+
+        var fields = [
+            'mrn',
+            'name',
+            'age',
+            'gender',
+            'depressionraw',
+            'anxietyraw',
+            'angerraw',
+            'physicalfunctionraw',
+            'paininterferenceraw',
+            'painbehaviorraw',
+            'fatigueraw',
+            'sleeprelatedimpairmentraw',
+            'sleepdisturbanceraw',
+            'emotionalsupportraw',
+            'instrumentalsupportraw',
+            'satisfactionrolesactivitiesraw',
+            'socialisolationraw',
+            'abilitytoparticipatesocialraw',
+            'globalhealthphysicalraw',
+            'globalhealthmentalraw',
+
+            'milesfromclinic',
+            'durationfromclinic',
+            'pcp',
+            'referring',
+            'maritalstatus',
+            'otherpainmd',
+            'education',
+            'specificquestion',
+            's5cause',
+            's5impact',
+            's5goal',
+            's5treatment',
+            'typicalday',
+            'occupation',
+            'currentwork',
+            'lastwork',
+            'disability',
+            'disabilityKind',
+            'legalforpain',
+            'legalgeneral',
+            'painduration',
+            'painstart',
+            'painquality',
+            'paintiming',
+            'painalleviate',
+            'painexacerbate',
+            'hcutilclinic',
+            'hcutiled',
+            'hcutilhospital',
+            'hcutilhospitalnights',
+            'sleepsnore',
+            'sleeppernight',
+            'sleepdifficulty',
+            'traumaticminor',
+            'traumaticadult',
+            'childneglect',
+            'childpain',
+            'currentthreatenvironment',
+            'psychhospitalization',
+            'traumaticonset',
+            'ptsdnightmare',
+            'ptsdavoidance',
+            'ptsdhypervigilance',
+            'ptsddetached',
+            'smoke',
+            'alcohol',
+            'drinksPerDay',
+            'drinksPerWeek',
+            'drinkBinge',
+            'drinkForPain',
+            'streetdrugs',
+            'drugproblemothers',
+            'substancetreatmenthx',
+
+            'o4Aactivity',
+            'o4Aanalgesia',
+            'o4Aaberrant',
+            'o4Aadverse',
+
+            'headacheLimits',
+            'headachePhobia',
+            'headacheNausea',
+            'headacheOnset',
+            'headacheBothersomeOnset',
+            'headacheFreq',
+            'headacheMoreThan1',
+            'headacheDuration',
+            'headacheOneSidedQ',
+            'headacheOneSidedWhichSide',
+            'headacheRampUp',
+            'headacheCommonLocation',
+            'headacheFreeDaysPerMonth',
+            'headacheActivityExacerbation',
+            'headacheRestlessDuring',
+            'headacheAssociatedSx',
+           'headacheTriggersQ',
+            'headacheAuraQ',
+            'headacheAuraType',
+            'headacheTriptansQ',
+            'headacheTriptansWhich',
+            'headacheOpioids15PerMonth'
+
+        ];
+
+        var field2prompt = {};
+        var prompt2field = {}
+        for(var i=0; i<prompts.length; i++) {
+            field2prompt[fields[i]] = prompts[i];
+            prompt2field[prompts[i]] = fields[i];
+        }
+
+        var txhx = {
+            'rxAdv': ['D.H.E.','Dextromethorphan','Ketamine','Low-dose naltrexone','Minocycline','Qutenza'],
+            'rxAnx': ['Ativan (Lorazepam)', 'Eskalith (Lithium)', 'Librium (Chlordiazepoxide)', 'Nardil (Phenelzine)', 'Risperdal (Resperidone)', 'Valium (Diazepam)', 'Xanax (Alprazolam)', 'Zyprexa (Olazepine)'],
+            'rxCam': ['Acetyl L-carnitine', 'Alpha lipoic acid', 'Butterbur', 'Chondroitin Sulfate', 'CoEnzyme Q10', 'Fish oil', 'Flaxseed oil', 'Garlic', 'Ginkgo Biloba', 'Ginseng', 'Glucosamine', 'Kava Kava', 'Magnesium Citrate', 'Riboflavin', 'S-adenosylmethionine', 'St. Johns Wart'],
+            'rxHeadache': ['Axert (Almotriptan)', 'Cafergot (Ergotamine)', 'Cambia', 'Fioricet (Butalbital)', 'Frova (Frovatriptan)', 'Imitrex (Sumatriptan)', 'Inderal (Propranolol)', 'Maxalt (Rizatriptan)', 'Midrin (Isometheptene)', 'Namenda (Memandine)', 'Relpax (Eletriptan)', 'Verapamil', 'Zomig (Zolmitriptan)'],
+            'rxMood': ['Abilify (Aripiprazole)', 'Celexa (Citalopram)', 'Cymbalta (Duloxetine)', 'Deseryl (Trazadone)', 'Desipramine', 'Effexor (Venlafaxine)', 'Elavil (Amitriptyline)', 'Lexapro (Escitalopram)', 'Pamelor (Nortriptyline)', 'Paxil (Paroxetine)', 'Pristiq (Desvenlafaxine)', 'Prozac (Fluoxetine)', 'Remoron (Mitrazepine)', 'Savella (Milnacipran)', 'Serzone (Nefazadone)', 'Wellbutrin (Buproprion)', 'Zoloft (Sertraline)'],
+            'rxMuscle': ['Flexeril (Cyclobenzaprine)', 'Klonopin (Clonazepam)', 'Lioresal (Baclofen)', 'Robaxin (Methocarbamol)', 'Skelaxin (Metaxolone)', 'Soma (Carisprodol)', 'Valium (Diazepam)', 'Zanaflex (Tizanidine)'],
+            'rxNsaid': ['Aleve (Naprosyn)', 'Celebrex (Celecoxib)', 'Feldene (Piroxicam)', 'Indocin (Indomethacin)', 'Mobic (Meloxicam)', 'Motrin, Advil (Ibuprofen)', 'Ponstel (Mefenamic acid)', 'Toradol (Ketorolac)', 'Voltaren (Diclofenac)'],
+            'rxNerve': ['Carbamazepine (Tegretol)', 'Flecainide (Tambocor)', 'Gabapentin (Neurontin)', 'Lamotrigine (Lamictal)', 'Leveteracitam (Keppra)', 'Mexilitine (Mexitil))', 'Oxycarbazepine (Trileptal)', 'Pregabalin (Lyrica)', 'Tiagabine (Gabatril)', 'Topiramate (Topamax))', 'Valproic acid (Depakote)', 'Zonisamide (Zonegram)'],
+            'rxOpioid': ['Actiq (Fentanyl lozenges)', 'Codeine, Tylenol #3,#4', 'Demerol (Meperidine)', 'Dilaudid (Hydromorphone)', 'Duragesic (Fentanyl patch)', 'MS Contin, Avinza, Kadian (Morphine)', 'Methadone', 'Nucynta (Tapentadol)', 'Opana (Oxymorphone)', 'Percocet, Roxycodone, Oxycontin (Oxycodone)', 'Stadol (Butorphanol)', 'Ultram (Tramadol)', 'Vicodin, Lortab, Norco (Hydrocodone)'],
+            'rxSleep': ['Ambien (Zolpidem)', 'Halcion (Triazolam)', 'Restoril (Temazepam)', 'Sonata (Zaleplon)', 'Xanax (Alprazolam)'],
+
+            'txAdv': ['Deep brain stimulation', 'Functional restoration program', 'Interdisciplinary pain management', 'Intrathecal pump', 'Minimally invasive lumbar decompression (MILD)', 'Opioid detoxification', 'Peripheral nerve surgery', 'Spinal cord stimulation', 'Spine surgery', 'Transcranial magnetic stimulation'],
+            'txCam': ['Acupressure', 'Acupuncture', 'Animal Assisted Therapy', 'Aricular Acupuncture', 'Auricular Acupuncture', 'Aromatherapy', 'Ayurveda and Yoga', 'Biofeedback', 'Chiropractic manipulations', 'Herbal Therapies and Micronutrients', 'Homeopathy', 'Hypnosis', 'Intraoral Therapy for Headache', 'Laser Biostimulation Therapy', 'Magnetic Field Biostimulation Therapy', 'Music Therapy', 'Prolotherapy', 'Reflexology', 'Therapeutic Massage', 'Therapeutic Touch'],
+            'txInj': ['Botox injection', 'Bursa or joint steroid injection', 'Epidural steroid injection', 'Facet joint injection', 'Medial branch block', 'Nerve blocks', 'Trigger point injection'],
+            'txPsych': ['Alcohol or drug detox', 'Biofeedback', 'Cognitive behavioral therapy', 'Depression and/or anxiety treatment', 'Mindfulness meditation', 'Psychological counseling', 'Relaxation therapy'],
+            'txRehab': ['Aquatic therapy', 'Braces, supports, shoe inserts', 'Core strengthening, conditioning (Active physical therapy)', 'Heat, cold (Topical)', 'Massage', 'Occupational therapy', 'TENS unit', 'Traction', 'Ultrasound, laser (Passive PT modalities)']
+        };
+
+        var txCurr = {};
+        Object.keys(txhx).forEach( function(x) {
+            txCurr[x] = [];
+        });
+
+        var txhxHash = {};
+        Object.keys(txhx).forEach( function(x) {
+            txhx[x].forEach( function(y) {
+                txhxHash[y] = x;
+            })
+        });
+
+        var txhxReport = {};
+
+        var txhxLabel = {
+            'rxAdv':'Advanced',
+            'rxAnx':'Anxiolytics',
+            'rxCam':'CAM',
+            'rxHeadache':'Headache',
+            'rxMood':'Mood',
+            'rxMuscle':'Muscle relaxants',
+            'rxNsaid':'NSAIDs',
+            'rxNerve':'Anti-neuropathics',
+            'rxOpioid':'Opioids',
+            'rxSleep':'Sleep',
+            'txAdv':'Advanced',
+            'txCam':'CAM',
+            'txInj':'Interventions',
+            'txPsych':'Psychological',
+            'txRehab':'Rehabilitation'
+        }
+
+        console.log("parsing");
+        console.log(theInput);
+
+        var lines = theInput.split(/\n/);
+
+        for(var current=0; current<lines.length; current++) {
+
+            var line = cleanLine(lines[current]);
+
+            var a = line.split(/\t/);
+
+            if(a[0] == 'Opioid Risk') {
+                current++;
+                current++;
+                line = cleanLine(lines[current]);
+                a = line.split(/\t/);
+                $scope.data.ort = a[1];
+                $scope.data.ortInt = a[2];
+            }
+
+            if(txhxHash[a[0]]) {
+                if(!txhxReport[txhxHash[a[0]]]) {
+                    txhxReport[txhxHash[a[0]]] = [];
+                }
+
+                var s;
+                if(m = a[0].match(/\(([^\)]+)\)/)) {
+                    s = m[1];
+                } else {
+                    s = a[0];
+                }
+
+                for(var j=1; j<a.length; j++) {
+                    if(a[j].length > 0) {
+                        s = s + ' - ' + a[j];
+                        if(a[j] == 'Still taking') {
+                            txCurr[txhxHash[a[0]]].push(a[0]);
+                        }
+                    }
+                }
+                txhxReport[txhxHash[a[0]]].push(s);
+            }
+            else {
+                if(a.length==4) {
+                    console.log(a);
+                    if( $.grep(a,$.isNumeric).length == 4 ) {
+                        $scope.data.vasworst = a[0];
+                        $scope.data.vasaverage = a[1];
+                        $scope.data.vasnow = a[2];
+                        $scope.data.vasleast = a[3];
+                    }
+                }
+                if(a.length==3) {
+                    console.log(a);
+                    if( $.grep(a,$.isNumeric).length == 3 ) {
+                        $scope.data.vasworst = a[0];
+                        $scope.data.vasaverage = a[1];
+                        $scope.data.vasnow = a[2];
+                    }
+                }
+                if(a.length==2) {
+                    a[0] = a[0].replace(/[:\.\?]$/,'');
+                    a[0] = a[0].replace(/\s+$/,'');
+                    a[0] = a[0].replace(/  +/,' ');
+                    if(!prompt2field[a[0]]) {
+                        console.log("No key " + a[0]);
+                    } else {
+                        $scope.data[prompt2field[a[0]]] = a[1];
+                    }
+                }
+            }
+        }
+
+        var hasTxHx = false;
+        console.log(txhxHash);
+        Object.keys(txhx).forEach(function(x) {
+            if(!txhxReport[x]) {
+                txhxReport[x] = ['None'];
+            } else {
+                hasTxHx = true;
+            }
+        });
+        console.log(txhxReport);
+
+        var headacheData = {};
+        var headacheRegex = /^headache/;
+        Object.keys($scope.data).forEach( function(x) {
+            if(x.match(headacheRegex)) {
+                headacheData[x] = $scope.data[x];
+            }
+        });
+
+        /* save data */
+        choirService.name = $scope.data.name;
+        choirService.age = $scope.data.age;
+        choirService.gender = $scope.data.gender;
+
+        /*************/
+
+        var a = splitPROMIS($scope.data.depressionraw);
+        if(a && a.length==3) {
+            $scope.data.depression = a[0];
+            $scope.data.depressionp = a[1];
+            $scope.data.depressionint = a[2];
+        } else {
+            $scope.data.depression = $scope.data.depressionp = $scope.data.depressionint = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.anxietyraw);
+        if(a && a.length==3) {
+            $scope.data.anxiety = a[0];
+            $scope.data.anxietyp = a[1];
+            $scope.data.anxietyint = a[2];
+        } else {
+            $scope.data.anxiety = $scope.data.anxietyp = $scope.data.anxietyint = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.angerraw);
+        if(a && a.length==2) {
+            $scope.data.anger = a[0];
+            $scope.data.angerp = a[1];
+        } else {
+            $scope.data.anger = $scope.data.angerp = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.physicalfunctionraw);
+        if(a && a.length==2) {
+            $scope.data.physicalfunction = a[0];
+            $scope.data.physicalfunctionp = a[1];
+        } else {
+            $scope.data.physicalfunction = $scope.data.physicalfunctionp = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.paininterferenceraw);
+        if(a && a.length==2) {
+            $scope.data.paininterference = a[0];
+            $scope.data.paininterferencep = a[1];
+        } else {
+            $scope.data.paininterference = $scope.data.paininterferencep = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.painbehaviorraw);
+        if(a && a.length==2) {
+            $scope.data.painbehavior = a[0];
+            $scope.data.painbehaviorp = a[1];
+        } else {
+            $scope.data.painbehavior = $scope.data.painbehaviorp = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.fatigueraw);
+        if(a && a.length==2) {
+            $scope.data.fatigue = a[0];
+            $scope.data.fatiguep = a[1];
+        } else {
+            $scope.data.fatigue = $scope.data.fatiguep = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.sleeprelatedimpairmentraw);
+        if(a && a.length==2) {
+            $scope.data.sleeprelatedimpairment = a[0];
+            $scope.data.sleeprelatedimpairmentp = a[1];
+        } else {
+            $scope.data.sleeprelatedimpairment = $scope.data.sleeprelatedimpairmentp = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.sleepdisturbanceraw);
+        if(a && a.length==3) {
+            $scope.data.sleepdisturbance = a[0];
+            $scope.data.sleepdisturbancep = a[1];
+            $scope.data.sleepdisturbanceint = a[2];
+        } else {
+            $scope.data.sleepdisturbance = $scope.data.sleepdisturbancep = $scope.data.sleepdisturbanceint = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.emotionalsupportraw);
+        if(a && a && a.length==2) {
+            $scope.data.emotionalsupport = a[0];
+            $scope.data.emotionalsupportp = a[1];
+        } else {
+            $scope.data.emotionalsupport = $scope.data.emotionalsupportp = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.instrumentalsupportraw);
+        if(a && a.length==2) {
+            $scope.data.instrumentalsupport = a[0];
+            $scope.data.instrumentalsupportp = a[1];
+        } else {
+            $scope.data.instrumentalsupport = $scope.data.instrumentalsupportp = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.satisfactionrolesactivitiesraw);
+        if(a && a.length==2) {
+            $scope.data.satisfactionrolesactivities = a[0];
+            $scope.data.satisfactionrolesactivitiesp = a[1];
+        } else {
+            $scope.data.satisfactionrolesactivities = $scope.data.satisfactionrolesactivitiesp = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.socialisolationraw);
+        if(a && a.length==2) {
+            $scope.data.socialisolation = a[0];
+            $scope.data.socialisolationp = a[1];
+        } else {
+            $scope.data.socialisolation = $scope.data.socialisolationp = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.abilitytoparticipatesocialraw);
+        if(a && a.length==2) {
+            $scope.data.abilitytoparticipatesocial = a[0];
+            $scope.data.abilitytoparticipatesocialp = a[1];
+        } else {
+            $scope.data.abilitytoparticipatesocial = $scope.data.abilitytoparticipatesocialp = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.globalhealthphysicalraw);
+        if(a && a.length==2) {
+            $scope.data.globalhealthphysical = a[0];
+            $scope.data.globalhealthphysicalp = a[1];
+        } else {
+            $scope.data.globalhealthphysical = $scope.data.globalhealthphysicalp = noResponsePlaceHolder;
+        }
+
+        var a = splitPROMIS($scope.data.globalhealthmentalraw);
+        if(a && a.length==2) {
+            $scope.data.globalhealthmental = a[0];
+            $scope.data.globalhealthmentalp = a[1];
+        } else {
+            $scope.data.globalhealthmental = $scope.data.globalhealthmentalp = noResponsePlaceHolder;
+        }
+
+
+        for(var i=0; i<fields.length; i++) {
+            if(!$scope.data[fields[i]]) {
+                $scope.data[fields[i]] = noResponsePlaceHolder;
+            }
+        }
+
+
+        console.log($scope.data);
+
+        if($scope.data.gender == 'M') {
+            $scope.data.hisher = 'his';
+            $scope.data.HisHer = 'His';
+            $scope.data.heshe = 'he';
+            $scope.data.HeShe = 'He';
+            $scope.data.genderdesc = 'male';
+            $scope.data.manWoman = 'man';
+        } else {
+            $scope.data.hisher = 'her';
+            $scope.data.HisHer = 'Her';
+            $scope.data.heshe = 'she';
+            $scope.data.HeShe = 'She';
+            $scope.data.genderdesc = 'female';
+            $scope.data.manWoman = 'woman';
+        }
+
+        $scope.smartlist = {};
+        $scope.smartlist.diddidnot = '{DID/DID NOT:18147}';
+        $scope.smartlist.doesdoesnot = '{DOES:19304}';
+        $scope.smartlist.hashasnot = '{HAS/HAS NOT:19308}';
+        $scope.smartlist.isisnot = '{IS/IS NOT:23116}';
+        $scope.smartlist.havehavenot = '{HAVE/HAVE NOT:24600}';
+
+        function andorQuote(txt) {
+            if( (m=txt.match(/^and\/or (.+)$/)) ) {
+                return('"' + m[1] + '"');
+            }
+            var a = txt.split(/and\/or/).map(cleanField);
+            if(a.length == 1) {
+                return(a[0]);
+            }
+            if(a[0] != '') {
+                return(a[0] + ' and "' + a[1] + '"');
+            } else {
+                return('"' + a[1] + '"');
+            }
+        }
+
+        var br = '<br/>'; // or \n
+
+        var n = [];
+        var o = '';
+        var pps = {};
+        pps.SA = [];
+        pps.ACE = [];
+        pps.DSM = [];
+        pps.Employment = [];
+        pps.Complaints = [];
+        pps.Litigation = [];
+        pps.Interpersonal = [];
+        pps.PainCatastrophizing = [];
+        pps.Suicide = [];
+        pps.Expectations = [];
+
+        pps.Expectations.push($scope.data.HisHer + ' specific question for the Clinic is "' + $scope.data.specificquestion + '". ');
+        pps.Expectations.push($scope.data.HisHer + ' functional goals are ' +  andorQuote($scope.data.s5goal));
+
+//        o += 'We had the pleasure of seeing ' + $scope.data.name + ' at the Stanford University Pain Management Clinic today.  The consultation request was for us to assist in optimizing the management of ' + $scope.data.hisher + ' pain. Although you are familiar with the patient, we will review the history for our medical records. '
+//        o += br + br;
+//        o += $scope.data.HeShe + ' is a ' + $scope.data.age + ' old ' + $scope.data.genderdesc + ' who has @PMHP@. ' + $scope.data.HeShe + ' describes the pain as:';
+//        o += br + br;
+        o += '<b>Pain Experience</b>' + br;
+        o += '<b>Location</b>: ***' + br;
+        o += '<b>Inciting event</b>: per patient, \"' + $scope.data.painstart + '\"' + br;
+        o += '<b>Duration</b>: ' + andorQuote($scope.data.painduration) + br;
+        o += '<b>Timing</b>: ' + andorQuote($scope.data.paintiming) + br;
+        o += '<b>Pain quality</b>: ' + andorQuote($scope.data.painquality) + br;
+        o += '<b>Intensity</b>: ' + $scope.data.vasaverage + '/10 on average, ' + $scope.data.vasworst + '/10 at worst' + br;
+        o += '<b>Radiation</b>: ***' + br;
+        o += '<b>Alleviating factors</b>: ' + andorQuote($scope.data.painalleviate) + br;
+        o += '<b>Exacerbating factors</b>: ' + andorQuote($scope.data.painexacerbate) + br;
+        o += br;
+
+        if(Object.keys(headacheData).length > 0) {
+
+            o += '<b>Headache History</b>' + br;
+            //Object.keys(headacheData).forEach(function(x) {
+            //    o += x + ' ' + headacheData[x] + br;
+            //});
+
+            if(headacheData.headacheMoreThan1) {
+                if(headacheData.headacheMoreThan1 == 'Yes') {
+                    o += $scope.data.HeShe + ' states that ' + $scope.data.heshe + ' has <b>more than one kind of headache</b>. ';
+                } else {
+                    o += $scope.data.HeShe + ' states that ' + $scope.data.heshe + ' has only one kind of headache. ';
+                }
+            } else {
+                o += '***';
+            }
+
+            if(headacheData.headacheLimits && headacheData.headacheLimits == 'Yes') {
+                o += $scope.data.HeShe + ' states that the headache <b>limits</b> ' + $scope.data.hisher + ' function. ';
+            } else {
+                o += $scope.data.HeShe + ' states that the headache does not limit ' + $scope.data.hisher + ' function. ';
+            }
+            o += br;
+
+            o += '<b>Severity</b>: ' + $scope.data.vasaverage + '/10 on average, ' + $scope.data.vasworst + '/10 at worst';
+            o += br;
+            o += '<b>Location</b>: ';
+            if(headacheData.headacheOneSidedQ) {
+                if(headacheData.headacheOneSidedQ == 'Yes') {
+                    o += 'Unilateral on ' + headacheData.headacheOneSidedWhichSide + '. ';
+                } else {
+                    o += 'Not unilateral. ';
+                }
+                if(headacheData.headacheCommonLocation) {
+                    o += ' It is most commonly located at ' + headacheData.headacheCommonLocation + '. ';
+                }
+            } else {
+                o += '*** ';
+            }
+            o += br;
+            o += '<b>Quality</b>: ' + andorQuote($scope.data.painquality);
+            o += br;
+            o += '<b>Activity Worsening</b>: ';
+            if(headacheData.headacheActivityExacerbation) {
+                if(headacheData.headacheActivityExacerbation == 'Yes') {
+                    o += 'Yes';
+                } else {
+                    o += 'No';
+                }
+            } else {
+                o += '***';
+            }
+            o += br;
+            o += '<b>Nausea/Vomiting</b>: ';
+            if(headacheData.headacheNausea) {
+                if(headacheData.headacheNausea == 'Yes') {
+                    o += 'Yes';
+                } else {
+                    o += 'No';
+                }
+            } else {
+                o += '***';
+            }
+            o += br;
+            o += '<b>Sensitivity to light and sound</b>: ';
+            if(headacheData.headachePhobia) {
+                if(headacheData.headachePhobia == 'Yes') {
+                    o += 'Yes';
+                } else {
+                    o += 'No';
+                }
+            } else {
+                o += '***';
+            }
+            o += br;
+            o += '<b>Triggers</b>: ';
+            if(headacheData.headacheTriggersQ) {
+                if(headacheData.headacheTriggersQ == 'Yes') {
+                    o += 'Yes';
+                } else {
+                    o += 'No';
+                }
+            } else {
+                o += '***';
+            }
+            o += br;
+            o += '<b>Aura</b>: ';
+            if(headacheData.headacheAuraQ) {
+                if(headacheData.headacheAuraQ == 'Yes') {
+                    o += 'Yes';
+                    if(headacheData.headacheAuraType) {
+                        o += ', ' + headacheData.headacheAuraType;
+                    }
+                } else {
+                    o += 'No';
+                }
+            } else {
+                o += '***';
+            }
+            o += br;
+            o += '<b>Ramp-up to maximum intensity</b>: ';
+            if(headacheData.headacheRampUp) {
+                o += headacheData.headacheRampUp;
+            } else {
+                o += '***';
+            }
+            o += br;
+            o += '<b>Restlessness</b>: ';
+            if(headacheData.headacheRestlessDuring) {
+                if(headacheData.headacheRestlessDuring == 'Yes') {
+                    o += 'Yes';
+                } else {
+                    o += 'No';
+                }
+            } else {
+                o += '***';
+            }
+            o += br;
+
+            o += '<b>Associated Symptoms</b>: ';
+            if(headacheData.headacheAssociatedSx) {
+                o += headacheData.headacheAssociatedSx;
+            } else {
+                o += '***';
+            }
+            o += br;
+
+            o += '<b>Historical Onset</b>: ';
+            if(headacheData.headacheOnset) {
+                o += 'The headaches started \"<b>' + headacheData.headacheOnset + '</b>\". ';
+            }
+            if(headacheData.headacheBothersomeOnset) {
+                o += 'The most bothersome headaches started \"<b>' + headacheData.headacheOnset + '</b>\". ';
+            }
+            if(!headacheData.headacheOnset && !headacheData.headacheBothersomeOnset) {
+                o += '***';
+            }
+            o += br;
+
+            o += '<b>Frequency and Duration</b>: ';
+            if(headacheData.headacheFreq) {
+
+                var a = headacheData.headacheFreq.split(/\s+/);
+                if(a[5] > 0) {
+                    o += a[5] + ' per month. ';
+                } else if(a[3] > 0) {
+                    o += a[3] + ' per week. ';
+                } else if(a[1] > 0) {
+                    o += a[1] + ' per day. ';
+                }
+            }
+            if(headacheData.headacheDuration) {
+                o += 'The episodes last ' + headacheData.headacheDuration + '. ';
+            }
+            if(headacheData.headacheFreeDaysPerMonth) {
+                o += 'There are <b>' + headacheData.headacheFreeDaysPerMonth + '</b> headache-free days per month. ';
+            }
+            o += br;
+
+            o += '<b>Triptans</b>: ';
+           if(headacheData.headacheTriptansQ) {
+                if(headacheData.headacheTriptansQ == 'Yes') {
+                    o += $scope.data.HeShe + ' has tried triptans. '
+                    if(headacheData.headacheTriptansWhich) {
+                        o += 'These include ' + headacheData.headacheTriptansWhich + '. ';
+                    }
+                } else {
+                    o += ''
+                }
+            }
+            o += br;
+
+            o += '<b>Opioids</b>: ';
+            if(headacheData.headacheOpioids15PerMonth) {
+                if(headacheData.headacheOpioids15PerMonth == 'Yes') {
+                    o += $scope.data.HeShe + ' has <b>used opioid medications more than 15 days per month in the past 3 months</b>. ';
+                } else {
+                    o += $scope.data.HeShe + ' has not used opioid medications more than 15 days per month in the past 3 months. ';
+                }
+            }
+            o += br;
+            o += br;
+        }
+
+        o += '*** Additional History' + br;
+        o += '***' + br;
+
+        o += '<b>Current pain medications taken</b>:' + br;
+        Object.keys(txCurr).forEach(function(x) {
+            if(txCurr[x].length >0) {
+                o += '<b>' + txhxLabel[x] + '</b>' + ': ' + txCurr[x].join(", ") + br;
+            }
+        });
+        o += '***' + br;
+        o += '<i>MEDD</i>: *** mg/day' + br + br;
+
+        if(hasTxHx) {
+            o += br;
+            o += '<b>Medication History</b>:' + br;
+            o += '<b>Opioids</b>: ' + txhxReport['rxOpioid'].join('; ') + br;
+            o += '<b>NSAIDs</b>: ' + txhxReport['rxNsaid'].join('; ') + br;
+            o += '<b>Anti-neuropathics</b>: ' + txhxReport['rxNerve'].join('; ') + br;
+            o += '<b>Mood medications</b>: ' + txhxReport['rxMood'].join('; ') + br;
+            o += '<b>Anxiolytics</b>: ' + txhxReport['rxAnx'].join('; ') + br;
+            o += '<b>Muscle relaxants</b>: ' + txhxReport['rxMuscle'].join('; ') + br;
+            o += '<b>Headache medications</b>: ' + txhxReport['rxHeadache'].join('; ') + br;
+            o += '<b>Sleep medications</b>: ' + txhxReport['rxSleep'].join('; ') + br;
+            o += '<b>CAM</b>: ' + txhxReport['rxCam'].join('; ') + br;
+            o += '<b>Advanced medications</b>: ' + txhxReport['rxAdv'].join('; ') + br;
+
+            o += br;
+            o += '<b>Treatment History</b>:' + br;
+            o += '<b>Interventions</b>: ' + txhxReport['txInj'].join('; ') + br;
+            o += '<b>Rehabilitation</b>: ' + txhxReport['txRehab'].join('; ') + br;
+            o += '<b>Psychological</b>: ' + txhxReport['txPsych'].join('; ') + br;
+            o += '<b>CAM</b>: ' + txhxReport['txCam'].join('; ') + br;
+            o += '<b>Advanced treatments</b>: ' + txhxReport['txAdv'].join('; ') + br;
+        } else {
+            o += br;
+            o += '<b>Effective medications</b>:' + br;
+            o += '<b>Ineffective medications</b>:' + br;
+            o += '<b>Effective treatments</b>:' + br;
+            o += '<b>Ineffective treatments</b>:' + br;
+        }
+
+        o += br;
+        o += '<b>Pain Beliefs</b>:' + br;
+        o += '<b>Cause of pain</b>: ' + andorQuote($scope.data.s5cause) + br;
+        o += '<b>Sinister beliefs</b>: ' + '***' + br;
+        o += '<b>Life impact</b>: ' + andorQuote($scope.data.s5impact) + br;
+        o += '<b>Correct treatment</b>: ' + andorQuote($scope.data.s5treatment) + br;
+        o += '<b>Patient goals</b>: ' + andorQuote($scope.data.s5goal) + br;
+
+        o += br;
+        $scope.utilization = '';
+        $scope.utilization += '<b>Healthcare Utilization</b>:' + br;
+        $scope.utilization += $scope.data.hcutilclinic + " in the past 6 months" + br;
+        $scope.utilization += $scope.data.hcutiled + " in the past 6 months" + br;
+        $scope.utilization += $scope.data.hcutilhospital + " in the past 6 months" + br;
+        $scope.utilization += $scope.data.hcutilhospitalnights + " in the past 6 months" + br;
+        o += $scope.utilization;
+
+        o += br;
+        $scope.functionalHx = '';
+        $scope.functionalHx += '<b>Function</b>:' + br;
+        $scope.functionalHx += $scope.data.HisHer + ' <b>PROMIS Global Physical Health score</b> is <b>' + $scope.data.globalhealthphysical + '</b>. ';
+        // $scope.functionalHx += $scope.data.HisHer + ' typical day is described as: \"' + $scope.data.typicalday + '\ ". ';
+        $scope.functionalHx += $scope.data.HisHer + ' <b>PROMIS Physical Function score</b> is <b>' + $scope.data.physicalfunction + '</b>. ';
+        $scope.functionalHx += $scope.data.HisHer + ' <b>PROMIS Pain Interference score</b> is <b>' + $scope.data.paininterference + '</b>. ';
+        $scope.functionalHx += $scope.data.HisHer + ' <b>PROMIS Fatigue score</b> is <b>' + $scope.data.fatigue + '</b>. ';
+        if(headacheData.headacheLimits && headacheData.headacheLimits == 'Yes') {
+            $scope.functionalHx += $scope.data.HeShe + ' states that the headache <b>limits</b> ' + $scope.data.hisher + ' function. ';
+        } else {
+            $scope.functionalHx += $scope.data.HeShe + ' states that the headache does not limit ' + $scope.data.hisher + ' function. ';
+        }
+        o += $scope.functionalHx;
+
+        o += br + br;
+        $scope.sleepHx = '';
+        $scope.sleepHx += '<b>Sleep History</b>:' + br;
+        if(!$scope.data.sleepsnore) {
+            $scope.sleepHx += 'In terms of snoring ' + noResponsePlaceHolder;
+            n.push('In terms of snoring ' + noResponsePlaceHolder);
+        } else if($scope.data.sleepsnore == 'No') {
+            $scope.sleepHx += $scope.data.HeShe + ' denies snoring at night. ';
+        } else {
+            $scope.sleepHx += $scope.data.HeShe + ' endorses snoring at night. ';
+            n.push($scope.data.HeShe + ' endorses snoring at night. ');
+        }
+
+        // $scope.sleepHx += $scope.data.HeShe + ' sleeps <b>' + $scope.data.sleeppernight + ' per night</b>. ';
+
+        if($scope.data.sleepdifficulty == noResponsePlaceHolder) {
+            $scope.sleepHx += 'In terms of difficulties with sleep, ' + $scope.data.heshe + ' reports: None. ';
+        } else {
+            $scope.sleepHx += 'In terms of difficulties with sleep, ' + $scope.data.heshe + ' reports: <b>' + $scope.data.sleepdifficulty + '</b>. ';
+        }
+        $scope.sleepHx += $scope.data.HisHer + ' <b>PROMIS Sleep-Related Impairment score</b> is <b>' + $scope.data.sleeprelatedimpairment + '</b>. ';
+        $scope.sleepHx += $scope.data.HisHer + ' <b>PROMIS Sleep Disturbance score</b> is <b>' + $scope.data.sleepdisturbance + '</b>. This is deemed <b>' + $scope.data.sleepdisturbanceint + '</b> in severity. ';
+        o += $scope.sleepHx;
+
+
+        if( (m = $scope.data.sleeppernight.match(/(\d+)/))) {
+            if(m[1] <= 6) {
+                n.push($scope.data.HeShe + ' sleeps <b>' + $scope.data.sleeppernight + ' per night</b>. ');
+            }
+        }
+        if($scope.data.sleepdifficulty != noResponsePlaceHolder) {
+            n.push('In terms of difficulties with sleep, ' + $scope.data.heshe + ' reports: <b>' + $scope.data.sleepdifficulty + '</b>. ');
+        }
+
+//        o += br + br;
+//        o += '<b>History Review</b>:' + br;
+//        o += '@PMH@' + br;
+//        o += '@PSH@' + br;
+
+        o += br + br;
+        o += '<b>Opioid Treatment</b>:' + br;
+        o += '<b>Analgesia</b>: ';
+        if($scope.data.o4Aanalgesia) {
+            o += 'Effects on analgesia: ' + $scope.data.o4Aanalgesia+ br;
+            n.push('<b>Opioid effects on analgesia</b>: ' + $scope.data.o4Aanalgesia);
+        } else {
+            o += 'Opioid medication {.:21072006::"does not"} provide analgesia' + br;
+        }
+        o += '<b>Activity level</b>: ';
+        if($scope.data.o4Aactivity ) {
+            o += 'Effects on activity: ' + $scope.data.o4Aactivity + br;
+            n.push('<b> Opioid effects on activity</b>: ' + $scope.data.o4Aactivity);
+        } else {
+            o += 'Opioid medication {.:21072006::"does not"} improve level of function.' + br;
+        }
+        o += '<b>Adverse effects</b>: ';
+        if($scope.data.o4Aadverse ) {
+            o += $scope.data.o4Aadverse + br;
+            n.push('<b>Opioid adverse effects</b>: ' + $scope.data.o4Aadverse);
+        } else {
+            o += $scope.data.HeShe + ' {denied/reports:21020048} significant side effects.' + br;
+        }
+        o += '<b>Aberrant behavior</b>: ';
+        if($scope.data.o4Aaberrant ) {
+            o += $scope.data.o4Aaberrant + br;
+            n.push('<b>Opioid aberrant behavior</b>: ' + $scope.data.o4Aaberrant);
+        } else {
+            o += $scope.data.HeShe + ' {denied/reports:21020048} aberrant behaviors.' + br;
+        }
+
+        if($scope.data.ort && $scope.data.ortInt) {
+            o += '<b>Opioid Risk Tool (ORT)</b>: ' + $scope.data.ort + ' (' + $scope.data.ortInt + ')' + br;
+        }
+
+        o += br + br;
+        $scope.socialHx = '';
+        $scope.socialHx += '<b>Social History</b>:' + br;
+        $scope.socialHx += '<b>Family</b>: ';
+        if($scope.data.maritalstatus == 'Divorced') {
+            $scope.socialHx += $scope.data.HisHer + ' marital status is <b>' + $scope.data.maritalstatus + '</b>. ';
+            pps.Interpersonal.push($scope.data.HisHer + ' marital status is <b>' + $scope.data.maritalstatus + '</b>. ');
+        } else {
+            $scope.socialHx += $scope.data.HisHer + ' marital status is ' + $scope.data.maritalstatus + '. ';
+            pps.Interpersonal.push($scope.data.HisHer + ' marital status is ' + $scope.data.maritalstatus + '. ');
+        }
+        $scope.socialHx += br;
+        $scope.socialHx += '<b>Support</b>: ';
+        $scope.socialHx += $scope.data.HisHer + ' <b>PROMIS Emotional Support score</b> is <b>' + $scope.data.emotionalsupport + '</b>. ';
+        $scope.socialHx += $scope.data.HisHer + ' <b>PROMIS Satisfaction with Roles and Social Activities score</b> is <b>' + $scope.data.satisfactionrolesactivities + '</b>. ';
+        $scope.socialHx += $scope.data.HisHer + ' <b>PROMIS Social Isolation score</b> is <b>' + $scope.data.socialisolation + '</b>. ';
+        $scope.socialHx += br;
+
+        $scope.socialHx += '<b>Education/Work</b>: Patient completed education until ' + $scope.data.education + '. ' + $scope.data.HisHer + ' occupation is ' + $scope.data.occupation + '. ';
+        if($scope.data['lastwork'] && (m=$scope.data.lastwork.match(/(\d{4}) Years/) ) ) {
+            $scope.data.lastwork = 'in ' + m[1];
+        }
+
+        if($scope.data.currentwork == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HisHer + ' current employment is ' + noResponsePlaceHolder;
+        } else if($scope.data.currentwork == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' is currently <b>not working</b>. ';
+            $scope.socialHx += $scope.data.HeShe + ' <b>last worked ' + $scope.data.lastwork + '</b>. ';
+            n.push($scope.data.HeShe + ' is currently <b>not working</b>. ');
+            n.push($scope.data.HeShe + ' <b>last worked ' + $scope.data.lastwork + '</b>. ');
+            pps.Employment.push($scope.data.HeShe + ' is currently <b>not working</b>. ');
+            pps.Employment.push($scope.data.HeShe + ' <b>last worked ' + $scope.data.lastwork + '</b>. ');
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' is currently working. ';
+        }
+
+        if($scope.data.disability == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' {IS/IS NOT:23116} on disability. ';
+        } else if($scope.data.disability == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' is not on disability. ';
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' is <b>on disability: ' + $scope.data.disability + '</b>. ';
+            n.push($scope.data.HeShe + ' is <b>on disability: ' + $scope.data.disability + '</b>. ');
+            pps.Employment.push($scope.data.HeShe + ' is <b>on disability: ' + $scope.data.disability + '</b>. ');
+        }
+
+        if($scope.data.legalforpain == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' {IS/IS NOT:23116} involved in legal action for the pain. ';
+        } else if($scope.data.legalforpain == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' is not involved in legal action for the pain. ';
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' is <b>involved in legal action for the pain</b>. ';
+            n.push($scope.data.HeShe + ' is <b>involved in legal action for the pain</b>. ');
+            pps.Litigation.push($scope.data.HeShe + ' is <b>involved in legal action for the pain</b>. ');
+        }
+
+        if($scope.data.legalgeneral == noResponsePlaceHolder) {
+            $scope.socialHx += noResponsePlaceHolder + ' {DOES:19304} have other legal problems. ';
+        } else if($scope.data.legalgeneral == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' does not have other legal problems. ';
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' does <b>have other legal problems</b>. ';
+            n.push($scope.data.HeShe + ' does <b>have other legal problems</b>. ');
+            pps.Litigation.push($scope.data.HeShe + ' does <b>have other legal problems</b>. ');
+        }
+
+        $scope.socialHx += br;
+        $scope.socialHx += '<b>Adverse Childhood Experiences</b>: ';
+        if($scope.data.traumaticminor == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' {HAS/HAS NOT:19308} had major upheaval prior to the age of 17. ';
+        } else if($scope.data.traumaticminor == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' did not experience any major upheaval prior to the age of 17. ';
+        } else if($scope.data.traumaticminor == 'Choose not to answer') {
+            $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' experienced any major upheaval prior to the age of 17</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' experienced any major upheaval prior to the age of 17</b>. ');
+            pps.ACE.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' experienced any major upheaval prior to the age of 17</b>. ');
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' did <b>experience some major upheaval prior to the age of 17</b>. ';
+            n.push($scope.data.HeShe + ' did <b>experience some major upheaval prior to the age of 17</b>. ');
+            pps.ACE.push($scope.data.HeShe + ' did <b>experience some major upheaval prior to the age of 17</b>. ');
+        }
+
+        // if($scope.data.traumaticadult == noResponsePlaceHolder) {
+        //     $scope.socialHx += $scope.data.HeShe + ' ' + $scope.smartlist.hashasnot + ' had major upheaval after the age of 17. ';
+        // } else if($scope.data.traumaticadult == 'No') {
+        //     $scope.socialHx += $scope.data.HeShe + ' did not experience any major upheaval after the age of 17. ';
+        // } else if($scope.data.traumaticadult == 'Choose not to answer') {
+        //     $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' experienced any major upheaval after the age of 17</b>. ';
+        //     n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' experienced any major upheaval after the age of 17</b>. ');
+        // } else {
+        //     $scope.socialHx += $scope.data.HeShe + ' did <b>experience some major upheaval after the age of 17</b>. ';
+        //     n.push($scope.data.HeShe + ' did <b>experience some major upheaval after the age of 17</b>. ');
+        // }
+
+        if($scope.data.childneglect == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' ' + $scope.smartlist.diddidnot + ' feel neglected as a child. ';
+        } else if($scope.data.childneglect == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' did not feel neglected as a child. ';
+        } else if($scope.data.childneglect == 'Choose not to answer') {
+            $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' felt neglected as a child</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' felt neglected as a child</b>. ');
+            pps.ACE.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' felt neglected as a child</b>. ');
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' <b>felt neglected as a child</b>. ';
+            n.push($scope.data.HeShe + ' <b>felt neglected as a child</b>. ');
+            pps.ACE.push($scope.data.HeShe + ' <b>felt neglected as a child</b>. ');
+        }
+
+        if($scope.data.childpain == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' ' + $scope.smartlist.diddidnot + ' experience chronic pain as a child. ';
+        } else if($scope.data.childpain == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' did not experience chronic pain as a child. ';
+        } else if($scope.data.childpain == 'Choose not to answer') {
+            $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' experienced chronic pain as a child</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' experienced chronic pain as a child</b>. ');
+            pps.ACE.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe+ ' experienced chronic pain as a child</b>. ');
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' <b>experienced chronic pain as a child</b>. ';
+           n.push($scope.data.HeShe + ' <b>experienced chronic pain as a child</b>. ');
+            pps.ACE.push($scope.data.HeShe + ' <b>experienced chronic pain as a child</b>. ');
+        }
+
+        if($scope.data.currentthreatenvironment == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' ' + $scope.smartlist.doesdoesnot + ' does not feel threatened in ' + $scope.data.hisher + ' current environment. ';
+        } else if($scope.data.currentthreatenvironment == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' does not feel threatened in ' + $scope.data.hisher + ' current environment. ';
+        } else if($scope.data.currentthreatenvironment == 'Choose not to answer') {
+            $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' felt threatened in ' + $scope.data.hisher + ' current environment</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' felt threatened in ' + $scope.data.hisher + ' current environment</b>. ');
+            pps.Suicide.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' felt threatened in ' + $scope.data.hisher + ' current environment</b>. ');
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' <b>felt threatened in ' + $scope.data.hisher + ' current environment</b>. ';
+            n.push($scope.data.HeShe + ' <b>felt threatened in ' + $scope.data.hisher + ' current environment</b>. ');
+            pps.Suicide.push($scope.data.HeShe + ' <b>felt threatened in ' + $scope.data.hisher + ' current environment</b>. ');
+        }
+
+        if($scope.data.psychhospitalization == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' ' + $scope.smartlist.hashasnot + ' hospitalized psychiatrically. ';
+        } else if($scope.data.psychhospitalization == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' has never been hospitalized psychiatrically. ';
+        } else if($scope.data.psychhospitalization == 'Choose not to answer') {
+            $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' has been hospitalized psychiatrically</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' has been hospitalized psychiatrically</b>. ');
+            pps.DSM.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' has been hospitalized psychiatrically</b>. ');
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' <b>has been hospitalized psychiatrically</b>. ';
+            n.push($scope.data.HeShe + ' <b>has been hospitalized psychiatrically</b>. ');
+            pps.DSM.push($scope.data.HeShe + ' <b>has been hospitalized psychiatrically</b>. ');
+        }
+
+        $scope.socialHx += br;
+        $scope.socialHx += '<b>Substance</b>: ';
+
+        if($scope.data.smoke == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' ' + $scope.smartlist.doesdoesnot + ' smoke. ';
+        } else if($scope.data.smoke == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' denied smoking. ';
+        } else if($scope.data.smoke == 'Choose not to answer') {
+            $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' smokes</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' smokes</b>. ');
+        } else {
+            if( (m=$scope.data.smoke.match(/How many packs per day (.+)/)) ) {
+                $scope.socialHx += $scope.data.HeShe + ' <b>endorsed smoking of ' + m[1] + ' per day</b>. ';
+                n.push($scope.data.HeShe + ' <b>endorsed smoking of ' + m[1] + ' per day</b>. ');
+                pps.SA.push($scope.data.HeShe + ' <b>endorsed smoking of ' + m[1] + ' per day</b>. ');
+            } else {
+                $scope.socialHx += $scope.data.HeShe + ' <b>endorsed smoking</b>. ';
+                n.push($scope.data.HeShe + ' <b>endorsed smoking</b>. ');
+                pps.SA.push($scope.data.HeShe + ' <b>endorsed smoking</b>. ');
+            }
+        }
+
+        if($scope.data.alcohol == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' ' + $scope.smartlist.doesdoesnot + ' drinking alcohol. ';
+        } else if($scope.data.alcohol == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' denied drinking alcohol. ';
+        } else if($scope.data.alcohol == 'Choose not to answer') {
+            $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' drinks alcohol</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' drinks alcohol</b>. ');
+        } else {
+
+            $scope.socialHx += $scope.data.HeShe + ' <b>endorsed drinking alcohol</b>, at about ' + $scope.data.drinksPerDay + ' drinks per day and ' + $scope.data.drinksPerWeek + ' drinks per week. ';
+            n.push($scope.data.HeShe + ' <b>endorsed drinking alcohol</b>, at about ' + $scope.data.drinksPerDay + ' drinks per day and ' + $scope.data.drinksPerWeek + ' drinks per week. ');
+            pps.SA.push($scope.data.HeShe + ' <b>endorsed drinking alcohol</b>, at about ' + $scope.data.drinksPerDay + ' drinks per day and ' + $scope.data.drinksPerWeek + ' drinks per week. ');
+
+            if($scope.data.drinkBinge == 'Yes') {
+                $scope.socialHx += $scope.data.HeShe + ' <b>endorsed drinking to intoxication</b>. ';
+                n.push($scope.data.HeShe + ' <b>endorsed drinking to intoxication</b>. ');
+                pps.SA.push($scope.data.HeShe + ' <b>endorsed drinking to intoxication</b>. ');
+            } else {
+                $scope.socialHx += $scope.data.HeShe + ' denies drinking to intoxication. ';
+            }
+
+            if($scope.data.drinkForPain == 'Yes') {
+                $scope.socialHx += $scope.data.HeShe + ' <b>endorsed drinking to decrease pain</b>. ';
+                n.push($scope.data.HeShe + ' <b>endorsed drinking to decrease pain</b>. ');
+                pps.SA.push($scope.data.HeShe + ' <b>endorsed drinking to decrease pain</b>. ');
+            } else {
+                $scope.socialHx += $scope.data.HeShe + ' denies drinking to decrease pain. ';
+            }
+
+        }
+
+        if($scope.data.streetdrugs == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' ' + $scope.smartlist.hashasnot + ' used street drugs in the last 10 years. ';
+        } else if($scope.data.streetdrugs == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' denied using street drugs in the last 10 years. ';
+        } else if($scope.data.streetdrugs == 'Choose not to answer') {
+            $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' used street drugs  in the last 10 years</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' used street drugs  in the last 10 years</b>. ');
+            pps.SA.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' used street drugs  in the last 10 years</b>. ');
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' <b>endorsed using street drugs in the last 10 years</b>. ';
+            n.push($scope.data.HeShe + ' <b>endorsed using street drugs in the last 10 years</b>. ');
+            pps.SA.push($scope.data.HeShe + ' <b>endorsed using street drugs in the last 10 years</b>. ');
+        }
+
+        if($scope.data.drugproblemothers == noResponsePlaceHolder) {
+            $scope.socialHx += 'Others ' + $scope.smartlist.havehavenot + ' thought that ' + $scope.data.heshe + ' has problems with drugs or alcohol. ';
+        } else if($scope.data.drugproblemothers == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' denied others think ' + $scope.data.heshe + ' has problems with drugs or alcohol. ';
+        } else if($scope.data.drugproblemothers == 'Choose not to answer') {
+            $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if others think ' + $scope.data.heshe + ' has problems with drugs or alcohol</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if others think ' + $scope.data.heshe + ' has problems with drugs or alcohol</b>. ');
+            pps.SA.push($scope.data.HeShe + ' <b>chooses not to answer if others think ' + $scope.data.heshe + ' has problems with drugs or alcohol</b>. ');
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' <b>endorsed others think ' + $scope.data.heshe + ' has problems with drugs or alcohol</b>. ';
+            n.push($scope.data.HeShe + ' <b>endorsed others think ' + $scope.data.heshe + ' has problems with drugs or alcohol</b>. ');
+            pps.SA.push($scope.data.HeShe + ' <b>endorsed others think ' + $scope.data.heshe + ' has problems with drugs or alcohol</b>. ');
+        }
+
+        if($scope.data.substancetreatmenthx == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HeShe + ' ' + $scope.smartlist.hashasnot + ' received treatment for substance use. ';
+        } else if($scope.data.substancetreatmenthx == 'No') {
+            $scope.socialHx += $scope.data.HeShe + ' denied having received treatment for substance use. ';
+        } else if($scope.data.substancetreatmenthx == 'Choose not to answer') {
+            $scope.socialHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' had received treatment for substance use</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' had received treatment for substance use</b>. ');
+            pps.SA.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' had received treatment for substance use</b>. ');
+        } else {
+            $scope.socialHx += $scope.data.HeShe + ' <b>endorsed having received treatment for substance use</b>. ';
+            n.push($scope.data.HeShe + ' <b>endorsed having received treatment for substance use</b>. ');
+            pps.SA.push($scope.data.HeShe + ' <b>endorsed having received treatment for substance use</b>. ');
+        }
+        o += $scope.socialHx;
+
+        o += br + br;
+
+        $scope.psychologyHx = '';
+        $scope.psychologyHx += '<b>Psychological History</b>: ';
+        $scope.psychologyHx += br;
+        $scope.psychologyHx += $scope.data.HisHer + ' <b>PROMIS Global Mental Health score</b> is <b>' + $scope.data.globalhealthmental + '</b>. ';
+        $scope.psychologyHx += br;
+        $scope.psychologyHx += '<b>Mood</b>: ';
+        $scope.psychologyHx += $scope.data.HisHer + ' <b>PROMIS Depression score</b> is <b>' + $scope.data.depression + '</b>,  this is deemed <b>' + $scope.data.depressionint + '</b> in severity. ';
+        $scope.psychologyHx += $scope.data.HisHer + ' <b>PROMIS Anxiety score</b> is <b>' + $scope.data.anxiety+ '</b>,  this is deemed <b>' + $scope.data.anxietyint + '</b> in severity. ';
+        $scope.psychologyHx += $scope.data.HisHer + ' <b>PROMIS Anger score</b> is <b>' + $scope.data.anger + '</b>. ';
+        $scope.psychologyHx += br;
+
+        pps.DSM.push($scope.data.HisHer + ' <b>PROMIS Depression score</b> is <b>' + $scope.data.depression + '</b>,  this is deemed <b>' + $scope.data.depressionint + '</b> in severity. ');
+        pps.DSM.push($scope.data.HisHer + ' <b>PROMIS Anxiety score</b> is <b>' + $scope.data.anxiety+ '</b>,  this is deemed <b>' + $scope.data.anxietyint + '</b> in severity. ');
+        pps.DSM.push($scope.data.HisHer + ' <b>PROMIS Anger score</b> is <b>' + $scope.data.anger + '</b>. ');
+
+        $scope.psychologyHx += '<b>PTSD</b>: ';
+
+        if($scope.data.traumaticonset == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HisHer + ' pain ' + $scope.smartlist.diddidnot + ' start following a traumatic experience. ';
+        } else if($scope.data.traumaticonset == 'No') {
+            $scope.psychologyHx += $scope.data.HisHer + ' pain did not start following a traumatic experience. ';
+        } else if($scope.data.traumaticonset == 'Choose not to answer') {
+            $scope.psychologyHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.hisher + ' pain did start following a traumatic experience</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.hisher + ' pain did start following a traumatic experience</b>. ');
+            pps.DSM.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.hisher + ' pain did start following a traumatic experience</b>. ');
+        } else {
+            $scope.psychologyHx += $scope.data.HisHer + ' <b>pain did start following a traumatic experience</b>. ';
+            n.push($scope.data.HisHer + ' <b>pain did start following a traumatic experience</b>. ');
+            pps.DSM.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.hisher + ' pain did start following a traumatic experience</b>. ');
+        }
+
+        if($scope.data.ptsdnightmare == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HisHer + $scope.smartlist.hashasnot + ' nightmares related to the experience. ';
+        } else if($scope.data.ptsdnightmare == 'No') {
+            $scope.psychologyHx += $scope.data.HeShe + ' denied nightmares related to the experience. ';
+        } else if($scope.data.ptsdnightmare == 'Choose not to answer') {
+            $scope.psychologyHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' experiences nightmares related to the experience</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' experiences nightmares related to the experience</b>. ');
+        } else {
+            $scope.psychologyHx += $scope.data.HeShe + ' <b>endorsed nightmares related to the experience</b>. ';
+            n.push($scope.data.HeShe + ' <b>endorsed nightmares related to the experience</b>. ');
+        }
+
+        if($scope.data.ptsdavoidance == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HisHer + $scope.smartlist.hashasnot + ' avoided experiences related to the trauma. ';
+        } else if($scope.data.ptsdavoidance == 'No') {
+            $scope.psychologyHx += $scope.data.HeShe + ' denied avoidance of experiences related to the trauma. ';
+        } else if($scope.data.ptsdavoidance == 'Choose not to answer') {
+            $scope.psychologyHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' seeks avoidance of experiences related to the trauma</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' seeks avoidance of experiences related to the trauma</b>. ');
+        } else {
+            $scope.psychologyHx += $scope.data.HeShe + ' <b>endorsed avoidance of experiences related to the trauma</b>. ';
+            n.push($scope.data.HeShe + ' <b>endorsed avoidance of experiences related to the trauma</b>. ');
+        }
+
+        if($scope.data.ptsdhypervigilance == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HisHer + $scope.smartlist.doesdoesnot + ' have hypervigilance. ';
+        } else if($scope.data.ptsdhypervigilance == 'No') {
+            $scope.psychologyHx += $scope.data.HeShe + ' denied hypervigilance. ';
+        } else if($scope.data.ptsdhypervigilance == 'Choose not to answer') {
+            $scope.psychologyHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' experiences hypervigilance</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' experiences hypervigilance</b>. ');
+        } else {
+            $scope.psychologyHx += $scope.data.HeShe + ' <b>endorsed hypervigilance</b>. ';
+            n.push($scope.data.HeShe + ' <b>endorsed hypervigilance</b>. ');
+        }
+
+        if($scope.data.ptsddetached == noResponsePlaceHolder) {
+            $scope.socialHx += $scope.data.HisHer + $scope.smartlist.doesdoesnot + ' have feelings of detachment. ';
+        } else if($scope.data.ptsddetached == 'No') {
+            $scope.psychologyHx += $scope.data.HeShe + ' denied feelings of detachment. ';
+        } else if($scope.data.ptsddetached == 'Choose not to answer') {
+            $scope.psychologyHx += $scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' experiences feelings of detachment</b>. ';
+            n.push($scope.data.HeShe + ' <b>chooses not to answer if ' + $scope.data.heshe + ' experiences feelings of detachment</b>. ');
+        } else {
+           $scope.psychologyHx += $scope.data.HeShe + ' <b>endorsed feelings of detachment</b>. ';
+            n.push($scope.data.HeShe + ' <b>endorsed feelings of detachment</b>. ');
+        }
+
+        var ptsdScore = ($scope.data.ptsdnightmare != 'No') + ($scope.data.ptsdavoidance != 'No') + ($scope.data.ptsdhypervigilance != 'No') + ($scope.data.ptsddetached != 'No');
+        pps.DSM.push($scope.data.HisHer + ' PTSD screening score is ' + ptsdScore + '/4. ');
+
+        $scope.psychologyHx += br;
+        $scope.psychologyHx += '<b>Safety</b>: ';
+        $scope.psychologyHx += $scope.data.HeShe + ' {HAS/HAS NOT:19308} seriously considered or attempted suicide; {DOES:19304} have a current suicide plan; {HAS/HAS NOT:19308} been in psychotherapy; {IS/IS NOT:23116} currently in psychotherapy. ';
+
+        o += $scope.psychologyHx;
+
+        var noremarkable = 'No remarkable findings.';
+        var tbd = '***';
+        if(pps.SA.length == 0) {
+            pps.SA += '<u><b>S</b>ubstance Abuse</u>: ' + noremarkable;
+        } else {
+            pps.SA = '<u><b>S</b>ubstance Abuse</u>: ' + pps.SA.join("");
+        }
+        if(pps.ACE.length == 0) {
+            pps.ACE += '<u><b>A</b>dverse Childhood Experiences</u>: ' + noremarkable;
+        } else {
+            pps.ACE = '<u><b>A</b>dverse Childhood Experiences</u>: ' + pps.ACE.join("");
+        }
+        if(pps.DSM.length == 0) {
+            pps.DSM += '<u><b>D</b>SM Diagnoses</u>: ' + noremarkable;
+        } else {
+            pps.DSM = '<u><b>D</b>SM Diagnoses</u>: ' + pps.DSM.join("");
+        }
+        if(pps.Employment.length == 0) {
+            pps.Employment += '<u><b>E</b>mployment</u>: ' + noremarkable;
+        } else {
+            pps.Employment = '<u><b>E</b>mployment</u>: ' + pps.Employment.join("");
+        }
+        if(pps.Complaints.length == 0) {
+            pps.Complaints += '<u><b>C</b>omplaints</u>: ' + tbd;
+        } else {
+            pps.Complaints = '<u><b>C</b>omplaints</u>: ' + pps.Complaints.join("");
+        }
+        if(pps.Litigation.length == 0) {
+            pps.Litigation += '<u><b>L</b>itigation</u>: ' + noremarkable;
+        } else {
+            pps.Litigation = '<u><b>L</b>itigation</u>: ' + pps.Litigation.join("");
+        }
+        if(pps.Interpersonal.length == 0) {
+           pps.Interpersonal += '<u><b>I</b>nterpersonal</u>: ' + noremarkable;
+        } else {
+            pps.Interpersonal = '<u><b>I</b>nterpersonal</u>: ' + pps.Interpersonal.join("");
+        }
+        if(pps.PainCatastrophizing.length == 0) {
+            pps.PainCatastrophizing += '<u><b>P</b>ain Catastrophizing</u>: ' + tbd;
+        } else {
+            pps.PainCatastrophizing = '<u><b>P</b>ain Catastrophizing</u>: ' + pps.PainCatastrophizing.join("");
+        }
+        if(pps.Suicide.length == 0) {
+            pps.Suicide += '<u><b>S</b>uicide</u>: ' + tbd;
+        } else {
+            pps.Suicide = '<u><b>S</b>uicide</u>: ' + pps.Suicide.join("");
+        }
+        if(pps.Expectations.length == 0) {
+            pps.Expectations += '<u><b>E</b>xpectations</u>: ' + tbd;
+        } else {
+            pps.Expectations = '<u><b>E</b>xpectations</u>: ' + pps.Expectations.join("");
+        }
+
+
+        $scope.pps =
+            pps.SA + br + pps.ACE + br + pps.DSM + br + pps.Employment + br + pps.Complaints + br + pps.Litigation + br + pps.Interpersonal + br + pps.PainCatastrophizing + br + pps.Suicide + br + pps.Expectations + br;
+
+        $scope.output = o;
+        $scope.notables = n.join(br);
+
+        choirService.updateNotables($scope.notables);
+        choirService.updatePps($scope.pps);
+        choirService.updateReportHx($scope.output);
+
+        choirService.setFunctionalHx($scope.functionalHx);
+        choirService.setPsychologyHx($scope.psychologyHx);
+        choirService.setSocialHx($scope.socialHx);
+
+        choirService.data = $scope.data;
+
+        $scope.parseComplete = true;
+
+        reportInputService.setSavedValue($scope);
+
+        console.log("parse complete");
+        console.log($scope.data.name);
+
+        $location.path('/subjectives');
+//        console.log($window.location);
+
+    }
+
+}]);
